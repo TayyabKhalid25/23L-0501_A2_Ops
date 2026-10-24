@@ -218,3 +218,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Assignment specific ignores
+.env
+.venv/
+data/raw/
+mlruns/
+
