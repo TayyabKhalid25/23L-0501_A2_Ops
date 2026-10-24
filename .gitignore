@@ -225,3 +225,5 @@ __marimo__/
 data/raw/
 mlruns/
 
+toy_labs/tuner_results/
+
