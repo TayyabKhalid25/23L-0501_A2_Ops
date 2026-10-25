@@ -1,0 +1,4 @@
+=== STAGE1_FEATURE_EXTRACTION TRAINABLE LAYERS ===
+
+Scope            Layer Name  Type Trainable Params
+ Head output_classification Dense            1,281

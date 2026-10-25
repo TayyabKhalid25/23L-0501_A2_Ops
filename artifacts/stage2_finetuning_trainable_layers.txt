@@ -1,0 +1,18 @@
+=== STAGE2_FINETUNING TRAINABLE LAYERS ===
+
+               Scope            Layer Name               Type Trainable Params
+mobilenetv2_1.00_224       block_15_expand             Conv2D          153,600
+mobilenetv2_1.00_224    block_15_expand_BN BatchNormalization            3,840
+mobilenetv2_1.00_224    block_15_depthwise    DepthwiseConv2D            8,640
+mobilenetv2_1.00_224 block_15_depthwise_BN BatchNormalization            3,840
+mobilenetv2_1.00_224      block_15_project             Conv2D          153,600
+mobilenetv2_1.00_224   block_15_project_BN BatchNormalization              640
+mobilenetv2_1.00_224       block_16_expand             Conv2D          153,600
+mobilenetv2_1.00_224    block_16_expand_BN BatchNormalization            3,840
+mobilenetv2_1.00_224    block_16_depthwise    DepthwiseConv2D            8,640
+mobilenetv2_1.00_224 block_16_depthwise_BN BatchNormalization            3,840
+mobilenetv2_1.00_224      block_16_project             Conv2D          307,200
+mobilenetv2_1.00_224   block_16_project_BN BatchNormalization            1,280
+mobilenetv2_1.00_224                Conv_1             Conv2D          409,600
+mobilenetv2_1.00_224             Conv_1_bn BatchNormalization            5,120
+                Head output_classification              Dense            1,281
