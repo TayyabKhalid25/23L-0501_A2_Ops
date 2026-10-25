@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="result-wrapper">
+    <div class="result-card">
+        <div class="result-header">
+            <span class="result-tag">Analysis Complete</span>
+            <h2 class="result-title">Classification Verdict</h2>
+        </div>
+
+        <div class="result-body">
+            <div class="result-image-col">
+                <div class="preview-container">
+                    <img src="{{ image_data_uri }}" alt="Uploaded Image Preview" class="preview-img">
+                    <div class="preview-filename">{{ filename }}</div>
+                </div>
+            </div>
+
+            <div class="result-details-col">
+                <!-- Verdict Badge -->
+                {% if predicted_label == "AI-Generated" %}
+                    <div class="verdict-banner verdict-ai">
+                        <span class="verdict-icon">🤖</span>
+                        <div class="verdict-text">
+                            <span class="verdict-status">AI-GENERATED MEDIA</span>
+                            <span class="verdict-subtitle">Synthetic patterns detected</span>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="verdict-banner verdict-real">
+                        <span class="verdict-icon">📷</span>
+                        <div class="verdict-text">
+                            <span class="verdict-status">AUTHENTIC PHOTOGRAPH</span>
+                            <span class="verdict-subtitle">Natural optical characteristics</span>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Confidence Gauge -->
+                <div class="confidence-box">
+                    <div class="confidence-header">
+                        <span class="confidence-label">Model Confidence</span>
+                        <span class="confidence-percentage">{{ "%.1f"|format(confidence * 100) }}%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill {% if predicted_label == 'AI-Generated' %}fill-ai{% else %}fill-real{% endif %}" 
+                             style="width: {{ confidence * 100 }}%;"></div>
+                    </div>
+                </div>
+
+                <!-- Technical Metrics Table -->
+                <div class="metrics-grid">
+                    <div class="metric-item">
+                        <span class="metric-name">Raw P(AI) Output</span>
+                        <span class="metric-val"><code>{{ "%.4f"|format(raw_probability) }}</code></span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-name">Decision Threshold</span>
+                        <span class="metric-val"><code>{{ "%.3f"|format(decision_threshold) }}</code></span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-name">Active Model</span>
+                        <span class="metric-val">{{ model_version }}</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-name">Inference Latency</span>
+                        <span class="metric-val">{{ latency_ms }} ms</span>
+                    </div>
+                </div>
+
+                <!-- Honest Caveat as required by Section 6 (Task 4) -->
+                <div class="caveat-box">
+                    <div class="caveat-title">⚠️ Mandatory AI Advisory & Caveat</div>
+                    <p class="caveat-text">
+                        VisionGuard operates on statistical pattern recognition and frequency domain heuristics. Extreme post-processing, aggressive noise reduction, vector illustrations, or heavy digital filters can occasionally trigger false positives or false negatives. This verdict should serve as an assistive screening indicator rather than definitive forensic proof.
+                    </p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="{{ url_for('index') }}" class="btn btn-secondary">← Analyze Another Image</a>
+                    <a href="{{ url_for('history') }}" class="btn btn-outline">View Database Trail →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

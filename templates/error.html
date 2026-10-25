@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="error-wrapper">
+    <div class="error-card">
+        <div class="error-code-badge">{{ error_code }}</div>
+        <h2 class="error-title">{{ error_title }}</h2>
+        <p class="error-desc">{{ error_message }}</p>
+        
+        <div class="error-tips">
+            <h4>💡 Recommended Action:</h4>
+            <ul>
+                <li>Ensure the file is a valid image in <strong>JPEG, PNG, or WEBP</strong> format.</li>
+                <li>Verify that the total file size does not exceed <strong>5 MB</strong>.</li>
+                <li>Check that the image file is not corrupted, truncated, or an empty file.</li>
+            </ul>
+        </div>
+
+        <div class="error-actions">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">← Return to Upload Page</a>
+            <a href="{{ url_for('health') }}" target="_blank" class="btn btn-outline">Check Health Status</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="history-container">
+    <div class="history-header">
+        <div>
+            <h1 class="history-title">Persistent Audit Trail</h1>
+            <p class="history-subtitle">Queryable SQLite record of all predictions processed by this VisionGuard instance (Task 5 Deliverable).</p>
+        </div>
+        <a href="{{ url_for('index') }}" class="btn btn-primary btn-sm">+ New Detection</a>
+    </div>
+
+    {% if records and records|length > 0 %}
+        <div class="table-card">
+            <div class="table-responsive">
+                <table class="audit-table">
+                    <thead>
+                        <tr>
+                            <th># ID</th>
+                            <th>Timestamp (UTC)</th>
+                            <th>Sanitized Filename</th>
+                            <th>Verdict</th>
+                            <th>Confidence</th>
+                            <th>Threshold</th>
+                            <th>Model</th>
+                            <th>Latency</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in records %}
+                            <tr>
+                                <td class="col-id"><code>#{{ row.id }}</code></td>
+                                <td class="col-time">{{ row.timestamp }}</td>
+                                <td class="col-file" title="{{ row.filename }}">
+                                    <span class="file-pill">{{ row.filename }}</span>
+                                </td>
+                                <td>
+                                    {% if row.predicted_label == "AI-Generated" %}
+                                        <span class="badge badge-ai">🤖 AI-Generated</span>
+                                    {% else %}
+                                        <span class="badge badge-real">📷 Authentic Real</span>
+                                    {% endif %}
+                                </td>
+                                <td class="col-conf"><strong>{{ "%.1f"|format(row.confidence * 100) }}%</strong></td>
+                                <td class="col-thresh"><code>{{ "%.3f"|format(row.decision_threshold) }}</code></td>
+                                <td class="col-model">{{ row.model_version }}</td>
+                                <td class="col-lat">{{ "%.1f"|format(row.latency_ms) }} ms</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📂</div>
+            <h3>No Records in Database Yet</h3>
+            <p>Upload an image to trigger the model and record your first permanent audit entry.</p>
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Upload First Image</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section">
+    <h1 class="hero-title">Verify Synthetic Media Integrity</h1>
+    <p class="hero-subtitle">Upload any image to detect whether it was created by Generative AI or captured in the real world.</p>
+</div>
+
+<div class="upload-wrapper">
+    <div class="upload-card">
+        <form action="{{ url_for('predict') }}" method="POST" enctype="multipart/form-data" id="uploadForm">
+            <div class="drop-zone" id="dropZone">
+                <div class="drop-zone-icon">📤</div>
+                <h3 class="drop-zone-text">Drag and drop your image here</h3>
+                <p class="drop-zone-sub">or <span class="browse-link">browse files</span> from your device</p>
+                <input type="file" name="image" id="fileInput" accept=".jpg,.jpeg,.png,.webp" class="file-input" required>
+                <div id="fileInfo" class="file-info hidden">
+                    <span class="file-name" id="fileName"></span>
+                    <span class="file-size" id="fileSize"></span>
+                </div>
+            </div>
+
+            <div class="upload-requirements">
+                <span class="req-item">✓ JPEG, PNG, WEBP</span>
+                <span class="req-item">✓ Max Size: 5 MB</span>
+                <span class="req-item">✓ In-Memory Processing (Zero Disk Footprint)</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+                <span class="btn-text">Run VisionGuard Analysis</span>
+                <span class="btn-spinner hidden" id="spinner">⏳ Processing...</span>
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfo = document.getElementById('fileInfo');
+    const fileName = document.getElementById('fileName');
+    const fileSize = document.getElementById('fileSize');
+    const submitBtn = document.getElementById('submitBtn');
+    const form = document.getElementById('uploadForm');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-active');
+    });
+
+    ['dragleave', 'dragend'].forEach(type => {
+        dropZone.addEventListener(type, () => dropZone.classList.remove('drag-active'));
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-active');
+        if (e.dataTransfer.files.length) {
+            fileInput.files = e.dataTransfer.files;
+            updateFileInfo();
+        }
+    });
+
+    fileInput.addEventListener('change', updateFileInfo);
+
+    function updateFileInfo() {
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            fileName.textContent = file.name;
+            fileSize.textContent = `(${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
+            fileInfo.classList.remove('hidden');
+        }
+    }
+
+    form.addEventListener('submit', () => {
+        submitBtn.disabled = true;
+        document.querySelector('.btn-text').classList.add('hidden');
+        document.getElementById('spinner').classList.remove('hidden');
+    });
+</script>
+{% endblock %}
