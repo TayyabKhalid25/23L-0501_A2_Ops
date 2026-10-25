@@ -1,0 +1,11 @@
+Index,Filename,Ground Truth,Predicted,Confidence (P(AI)),Error Type,Hypothesis
+1,dog.jpg,Real (0),AI (1),0.6525,False Positive (Real -> AI),Overly smooth studio lighting and high-contrast skin tones mimic diffusion denoiser artifacts.
+2,il_570xN.354623508_9g1k.jpg,Real (0),AI (1),0.4723,False Positive (Real -> AI),"Heavy digital post-processing, shallow depth-of-field, and synthetic bokeh resemble AI generation."
+3,ct-art-vector-illustrations-creative-minimalist-hand-drawn-vector-2286463217.jpg,Real (0),AI (1),0.3837,False Positive (Real -> AI),Vector illustration / minimalist graphic stylization resembles latent diffusion clipart.
+4,14_1110x.png,Real (0),AI (1),0.3708,False Positive (Real -> AI),High frequency repeating background patterns confuse spatial feature filters.
+5,Opossum-with-babies.jpg,Real (0),AI (1),0.4168,False Positive (Real -> AI),Digital camera aggressive noise reduction software smoothed natural sensor grain.
+6,Midjourney-2.png,AI (1),Real (0),0.2499,False Negative (AI -> Real),"Realistic photorealistic textures (pores, skin wrinkles) accurately reproduced by modern diffusion models."
+7,How-to-Use-Midjourney-to-create-AI-Art.jpg,AI (1),Real (0),0.2245,False Negative (AI -> Real),Realistic outdoor landscape lighting lacking typical anatomical or geometric distortions.
+8,Nov20_17_498430921.jpg,AI (1),Real (0),0.0953,False Negative (AI -> Real),Low-resolution source image conceals high-frequency diffusion artifacts and synthetic noise.
+9,lake-with-mountains-digital-download-ai-art-landscape-627.webp,AI (1),Real (0),0.2754,False Negative (AI -> Real),Classic photographic composition and natural shadows closely matching ImageNet distribution.
+10,midjourney-putin.jpg,AI (1),Real (0),0.2120,False Negative (AI -> Real),Subtle diffusion artifacts masked by subsequent compression and bilinear downscaling to 224x224.
