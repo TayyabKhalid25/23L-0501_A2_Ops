@@ -1,0 +1,28 @@
+# Version control & cache
+.git
+.gitignore
+.dvc
+.dvcignore
+.pytest_cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Secrets & Environment configuration (Task 6.2: keep secrets out of image)
+.env
+.env.*
+!.env.example
+
+# Datasets and training artifacts (not needed in production image)
+data/raw/
+artifacts/
+notebooks/
+mlruns/
+.dagshub/
+*.log

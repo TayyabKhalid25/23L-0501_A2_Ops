@@ -1,0 +1,61 @@
+name: VisionGuard CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test-and-build:
+    name: Lint, Test, and Docker Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: "pip"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest
+          pip install -r requirements.txt
+
+      - name: Lint with Flake8
+        run: |
+          # Stop build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # Treat formatting/style warnings as informational or non-fatal
+          flake8 . --count --exit-zero --max-complexity=15 --max-line-length=127 --statistics
+
+      - name: Run Pytest Suite
+        env:
+          SECRET_KEY: test_ci_secret_key
+          MAX_CONTENT_LENGTH_MB: 5
+        run: |
+          pytest tests/test_app.py -v
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Image
+        run: |
+          docker build -t visionguard-web:ci-test .
+
+      - name: Verify Docker Container Boots & Responds
+        run: |
+          docker run -d --name test-ci-container -p 5000:5000 \
+            -e SECRET_KEY=ci_test_key \
+            -e FLASK_ENV=production \
+            visionguard-web:ci-test
+          # Wait briefly for gunicorn and model warmup
+          sleep 5
+          docker logs test-ci-container
+          curl -f http://localhost:5000/health || exit 1
+          docker stop test-ci-container && docker rm test-ci-container

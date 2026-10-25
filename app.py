@@ -172,7 +172,7 @@ def health():
     Production health-check endpoint (Task 4.4 / 6.3).
     Returns JSON status confirming model readiness and database connectivity.
     """
-    db_ok, record_count = check_db_health()
+    db_ok, record_count, db_engine = check_db_health()
     status_code = 200 if db_ok else 503
 
     payload = {
@@ -184,6 +184,7 @@ def health():
         "decision_threshold": classifier.threshold,
         "max_upload_size_mb": MAX_SIZE_MB,
         "database_connected": db_ok,
+        "database_engine": db_engine,
         "database_records_logged": record_count if db_ok else 0,
         "environment": os.getenv("FLASK_ENV", "production")
     }

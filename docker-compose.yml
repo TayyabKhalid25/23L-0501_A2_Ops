@@ -1,0 +1,60 @@
+services:
+  # Database Service (Task 6.3)
+  # Uses PostgreSQL alpine, named volume, readiness health check, and internal network only (no port published to host)
+  db:
+    image: postgres:16-alpine
+    container_name: visionguard-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-visionguard_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-visionguard_secure_db_pass_2026}
+      POSTGRES_DB: ${DB_NAME:-visionguard_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - visionguard-net
+    # No "ports" mapping published to host — port 5432 is strictly internal to compose network
+    expose:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-visionguard_user} -d ${DB_NAME:-visionguard_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  # Web Application Service (Tasks 4, 5, 6)
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: visionguard-web:latest
+    container_name: visionguard-web
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      PORT: 5000
+      FLASK_ENV: production
+      DATABASE_URL: postgresql://${DB_USER:-visionguard_user}:${DB_PASSWORD:-visionguard_secure_db_pass_2026}@db:5432/${DB_NAME:-visionguard_db}
+      MODEL_PATH: /app/models/champion_model.keras
+      DECISION_THRESHOLD: 0.279
+      MAX_CONTENT_LENGTH_MB: 5
+      SECRET_KEY: ${SECRET_KEY:-visionguard_ops_prod_secret_23L-0501}
+    volumes:
+      # Decouple heavy model weights from container image (Task 6.3 Justification)
+      - ./models:/app/models:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - visionguard-net
+
+volumes:
+  postgres_data:
+    name: visionguard_postgres_data
+
+networks:
+  visionguard-net:
+    name: visionguard_internal_network
+    driver: bridge
