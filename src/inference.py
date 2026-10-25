@@ -51,11 +51,26 @@ class VisionGuardClassifier:
         
         start_load = time.perf_counter()
         if not os.path.exists(self.model_path):
-            raise FileNotFoundError(f"Model file not found at '{self.model_path}'. Ensure champion model is trained/downloaded.")
-            
-        self.model = keras.models.load_model(self.model_path)
+            if os.getenv("CI") == "true" or os.getenv("TESTING") == "True" or os.getenv("ALLOW_DUMMY_MODEL", "0") == "1":
+                print(f"[VisionGuard WARNING] Model file not found at '{self.model_path}'. Initializing mock model for CI/testing...")
+                self.model = self._build_dummy_model()
+                self.model_version = "v2-champion-mobilenetv2-ci-stub"
+            else:
+                raise FileNotFoundError(f"Model file not found at '{self.model_path}'. Ensure champion model is trained/downloaded via DVC.")
+        else:
+            self.model = keras.models.load_model(self.model_path)
         load_time = (time.perf_counter() - start_load) * 1000
         print(f"[VisionGuard] Model loaded successfully into memory in {load_time:.2f} ms.\n")
+
+    @staticmethod
+    def _build_dummy_model():
+        """Constructs a lightweight dummy model for CI/CD runners without DVC credentials."""
+        inputs = keras.layers.Input(shape=TARGET_SIZE + (3,))
+        x = keras.layers.GlobalAveragePooling2D()(inputs)
+        outputs = keras.layers.Dense(1, activation="sigmoid")(x)
+        model = keras.models.Model(inputs=inputs, outputs=outputs)
+        model.compile(optimizer="adam", loss="binary_crossentropy")
+        return model
 
     def preprocess_image_bytes(self, image_bytes):
         """

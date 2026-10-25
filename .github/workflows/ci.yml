@@ -27,15 +27,22 @@ jobs:
           pip install flake8 pytest
           pip install -r requirements.txt
 
+      - name: Generate Lightweight Model Stub for CI
+        run: |
+          mkdir -p models
+          python -c "import keras; m = keras.Sequential([keras.layers.Input((224,224,3)), keras.layers.GlobalAveragePooling2D(), keras.layers.Dense(1, activation='sigmoid')]); m.save('models/champion_model.keras')"
+
       - name: Lint with Flake8
         run: |
           # Stop build if there are Python syntax errors or undefined names
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --exclude .venv --count --select=E9,F63,F7,F82 --show-source --statistics
           # Treat formatting/style warnings as informational or non-fatal
-          flake8 . --count --exit-zero --max-complexity=15 --max-line-length=127 --statistics
+          flake8 . --exclude .venv --count --exit-zero --max-complexity=15 --max-line-length=127 --statistics
 
       - name: Run Pytest Suite
         env:
+          CI: "true"
+          TESTING: "True"
           SECRET_KEY: test_ci_secret_key
           MAX_CONTENT_LENGTH_MB: 5
         run: |
@@ -51,11 +58,12 @@ jobs:
       - name: Verify Docker Container Boots & Responds
         run: |
           docker run -d --name test-ci-container -p 5000:5000 \
+            -e CI=true \
             -e SECRET_KEY=ci_test_key \
             -e FLASK_ENV=production \
             visionguard-web:ci-test
-          # Wait briefly for gunicorn and model warmup
-          sleep 5
+          # Wait for gunicorn initialization and model warmup
+          sleep 10
           docker logs test-ci-container
-          curl -f http://localhost:5000/health || exit 1
+          curl --retry 5 --retry-delay 2 -f http://localhost:5000/health || exit 1
           docker stop test-ci-container && docker rm test-ci-container
