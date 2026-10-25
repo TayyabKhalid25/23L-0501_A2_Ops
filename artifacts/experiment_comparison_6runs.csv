@@ -1,0 +1,7 @@
+Run Name,Run ID,Family,Test Accuracy,Test Precision,Test Recall,Test F1,Test ROC-AUC
+baseline_cnn_manual,71438dd1,Custom CNN,0.5411,0.5565,0.8519,0.6732,0.5104
+baseline_cnn_low_lr,216599c8,Custom CNN,0.4452,0.0,0.0,0.0,0.6306
+baseline_cnn_no_augmentation,71613892,Custom CNN,0.6027,0.7018,0.4938,0.5797,0.6707
+mobilenetv2_transfer_manual,69ec5bef,MobileNetV2,0.7329,0.7838,0.716,0.7484,0.7594
+mobilenetv2_fully_frozen,2d20de67,MobileNetV2,0.6301,0.6174,0.8765,0.7245,0.6414
+mobilenetv2_high_lr,67f000ff,MobileNetV2,0.5616,1.0,0.2099,0.3469,0.8762
