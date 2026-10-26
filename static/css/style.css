@@ -659,3 +659,109 @@ body {
         padding: 1.5rem;
     }
 }
+
+/* ==============================================================================
+   Task 8: Client Gateway Theme & Cloud Integration Enhancements
+   ============================================================================== */
+.client-theme {
+    background: radial-gradient(circle at 10% 10%, #171938 0%, #0c0e23 100%);
+}
+
+.client-tag {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    padding: 2px 7px;
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    color: white;
+    border-radius: 4px;
+    vertical-align: middle;
+    margin-left: 4px;
+}
+
+.cloud-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #34d399;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-left: 10px;
+}
+
+.pulse-dot {
+    width: 7px;
+    height: 7px;
+    background-color: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #10b981;
+    animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.cloud-callout-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, rgba(99, 102, 241, 0.18) 0%, rgba(168, 85, 247, 0.15) 100%);
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.cloud-callout-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cloud-callout-left .cloud-icon {
+    font-size: 1.6rem;
+}
+
+.cloud-callout-left strong {
+    color: #f1f5f9;
+    font-size: 0.95rem;
+}
+
+.cloud-callout-left p {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin-top: 2px;
+}
+
+.cloud-latency-pill {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    color: #cbd5e1;
+}
+
+.history-badge-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.live-cloud-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #c084fc;
+    background: rgba(192, 132, 252, 0.12);
+    border: 1px solid rgba(192, 132, 252, 0.3);
+    padding: 4px 10px;
+    border-radius: 6px;
+}

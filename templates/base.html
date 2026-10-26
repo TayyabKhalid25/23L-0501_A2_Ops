@@ -3,24 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}VisionGuard - AI vs Real Image Detector{% endblock %}</title>
+    <title>{% block title %}VisionGuard Client - Cloud-Powered Detection{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="client-theme">
     <header class="navbar">
         <div class="nav-container">
             <a href="{{ url_for('index') }}" class="nav-brand">
                 <span class="brand-shield">🛡️</span>
-                <span class="brand-name">VisionGuard</span>
-                <span class="brand-badge">v2.0</span>
+                <span class="brand-name">VisionGuard <span class="client-tag">CLIENT</span></span>
+                {% if is_cloud %}
+                    <span class="cloud-indicator" title="Connected to AWS EC2">
+                        <span class="pulse-dot"></span> AWS EC2 Cloud
+                    </span>
+                {% else %}
+                    <span class="brand-badge">Local</span>
+                {% endif %}
             </a>
             <nav class="nav-links">
-                <a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">Detect Image</a>
-                <a href="{{ url_for('history') }}" class="nav-link {% if request.endpoint == 'history' %}active{% endif %}">Audit Trail</a>
-                <a href="{{ url_for('health') }}" target="_blank" class="nav-link nav-health">System Health ↗</a>
+                <a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">New Inspection</a>
+                <a href="{{ url_for('history') }}" class="nav-link {% if request.endpoint == 'history' %}active{% endif %}">Cloud Audit Trail</a>
+                <a href="{{ url_for('health') }}" target="_blank" class="nav-link nav-health">Cloud Health ↗</a>
             </nav>
         </div>
     </header>
@@ -46,7 +52,7 @@
 
     <footer class="footer">
         <div class="footer-container">
-            <p>VisionGuard AI vs Real Detection Service • Production Inference Stack</p>
+            <p>VisionGuard Web App • Integrated with AWS EC2 Cloud API • Task 8</p>
         </div>
     </footer>
 </body>

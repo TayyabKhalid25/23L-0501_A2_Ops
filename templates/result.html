@@ -2,10 +2,26 @@
 
 {% block content %}
 <div class="result-wrapper">
+    <!-- Cloud Integration Callout Banner -->
+    {% if is_cloud %}
+    <div class="cloud-callout-banner">
+        <div class="cloud-callout-left">
+            <span class="cloud-icon">☁️</span>
+            <div>
+                <strong>Inference Executed on AWS EC2 Cloud</strong>
+                <p>Request processed remotely by Champion MobileNetV2 container at <code>{{ cloud_host }}</code></p>
+            </div>
+        </div>
+        <div class="cloud-latency-pill">
+            Roundtrip: <strong>{{ roundtrip_ms }} ms</strong>
+        </div>
+    </div>
+    {% endif %}
+
     <div class="result-card">
         <div class="result-header">
-            <span class="result-tag">Analysis Complete</span>
-            <h2 class="result-title">Classification Verdict</h2>
+            <span class="result-tag">Inspection Verdict</span>
+            <h2 class="result-title">Classification Outcome</h2>
         </div>
 
         <div class="result-body">
@@ -17,13 +33,13 @@
             </div>
 
             <div class="result-details-col">
-                <!-- Verdict Badge -->
+                <!-- Verdict Banner -->
                 {% if predicted_label == "AI-Generated" %}
                     <div class="verdict-banner verdict-ai">
                         <span class="verdict-icon">🤖</span>
                         <div class="verdict-text">
-                            <span class="verdict-status">AI-GENERATED MEDIA</span>
-                            <span class="verdict-subtitle">Synthetic patterns detected</span>
+                            <span class="verdict-status">AI-GENERATED SYNTHETIC</span>
+                            <span class="verdict-subtitle">Algorithmic generative patterns detected</span>
                         </div>
                     </div>
                 {% else %}
@@ -31,7 +47,7 @@
                         <span class="verdict-icon">📷</span>
                         <div class="verdict-text">
                             <span class="verdict-status">AUTHENTIC PHOTOGRAPH</span>
-                            <span class="verdict-subtitle">Natural optical characteristics</span>
+                            <span class="verdict-subtitle">Natural sensor grain & organic optics</span>
                         </div>
                     </div>
                 {% endif %}
@@ -63,12 +79,12 @@
                         <span class="metric-val">{{ model_version }}</span>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-name">Inference Latency</span>
+                        <span class="metric-name">Cloud Latency</span>
                         <span class="metric-val">{{ latency_ms }} ms</span>
                     </div>
                 </div>
 
-                <!-- Honest Caveat as required by Section 6 (Task 4) -->
+                <!-- Honest Caveat -->
                 <div class="caveat-box">
                     <div class="caveat-title">⚠️ Mandatory AI Advisory & Caveat</div>
                     <p class="caveat-text">
@@ -79,7 +95,7 @@
                 <!-- Action Buttons -->
                 <div class="action-buttons">
                     <a href="{{ url_for('index') }}" class="btn btn-secondary">← Analyze Another Image</a>
-                    <a href="{{ url_for('history') }}" class="btn btn-outline">View Database Trail →</a>
+                    <a href="{{ url_for('history') }}" class="btn btn-primary">View Cloud Audit Trail →</a>
                 </div>
             </div>
         </div>

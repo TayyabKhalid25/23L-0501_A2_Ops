@@ -4,10 +4,21 @@
 <div class="history-container">
     <div class="history-header">
         <div>
-            <h1 class="history-title">Persistent Audit Trail</h1>
-            <p class="history-subtitle">Queryable SQLite record of all predictions processed by this VisionGuard instance (Task 5 Deliverable).</p>
+            <div class="history-badge-wrapper">
+                <h1 class="history-title">Persistent Audit Trail</h1>
+                {% if is_cloud %}
+                    <span class="live-cloud-tag">☁️ Live from AWS EC2 ({{ cloud_host }})</span>
+                {% endif %}
+            </div>
+            <p class="history-subtitle">
+                {% if is_cloud %}
+                    Showing verified database records queried directly from the cloud-hosted VisionGuard serving instance (Task 8).
+                {% else %}
+                    Queryable record of predictions stored in local persistent database.
+                {% endif %}
+            </p>
         </div>
-        <a href="{{ url_for('index') }}" class="btn btn-primary btn-sm">+ New Detection</a>
+        <a href="{{ url_for('index') }}" class="btn btn-primary btn-sm">+ New Inspection</a>
     </div>
 
     {% if records and records|length > 0 %}
@@ -56,7 +67,7 @@
             <div class="empty-icon">📂</div>
             <h3>No Records in Database Yet</h3>
             <p>Upload an image to trigger the model and record your first permanent audit entry.</p>
-            <a href="{{ url_for('index') }}" class="btn btn-primary">Upload First Image</a>
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Inspect First Image</a>
         </div>
     {% endif %}
 </div>
