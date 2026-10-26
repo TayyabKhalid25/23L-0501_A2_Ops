@@ -232,3 +232,4 @@ dvc_toy/
 /models
 
 artifacts/tuner_visionguard/
+*.docx

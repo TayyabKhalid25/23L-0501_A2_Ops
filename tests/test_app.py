@@ -100,7 +100,7 @@ def test_inference_pipeline_synthetic_image():
     
     result = classifier.predict(img_bytes.getvalue())
     assert "predicted_label" in result
-    assert result["predicted_label"] in ["AI-generated", "Authentic (Real)"]
+    assert result["predicted_label"] in ["AI-Generated", "Authentic (Real)"]
     assert 0.0 <= result["confidence"] <= 1.0
     assert 0.0 <= result["raw_probability"] <= 1.0
     assert result["latency_ms"] > 0
